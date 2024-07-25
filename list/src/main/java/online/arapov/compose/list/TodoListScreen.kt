@@ -18,17 +18,43 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.registry.ScreenRegistry
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import online.arapov.compose.data.ToDoViewModel
+import online.arapov.compose.navigation.SharedScreen
+
+class TodoListScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        CompositionLocalProvider(LocalViewModelStoreOwner provides (LocalContext.current as ViewModelStoreOwner)) {
+            val viewModel = viewModel<ToDoViewModel>()
+            TodoListContent(
+                list = viewModel.list,
+                onClick = { navigator.push(ScreenRegistry.get(SharedScreen.Details(it))) },
+                addTodo = { viewModel.list += it }
+            )
+        }
+    }
+}
 
 @Composable
-fun TodoListScreen(
+private fun TodoListContent(
     list: List<String>,
     onClick: (Int) -> Unit,
     addTodo: (String) -> Unit,

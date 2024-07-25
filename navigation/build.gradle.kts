@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "online.arapov.compose.details"
+    namespace = "online.arapov.compose.navigation"
     compileSdk = 34
 
     defaultConfig {
@@ -30,23 +30,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
 }
 
 dependencies {
     implementation(libs.voyager)
-    implementation(project(":navigation"))
-    implementation(project(":data"))
-
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.viewModel)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
 }

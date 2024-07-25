@@ -12,18 +12,53 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import online.arapov.compose.data.ToDoViewModel
+
+data class ToDoDetailsScreen(
+    val id: Int
+) : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+
+        CompositionLocalProvider(LocalViewModelStoreOwner provides (LocalContext.current as ViewModelStoreOwner)) {
+            val viewModel = viewModel<ToDoViewModel>()
+
+            if (id !in viewModel.list.indices) return@CompositionLocalProvider
+
+            val text = viewModel.list[id]
+            ToDoDetailsContent(
+                id = id,
+                text = text,
+                onDelete = {
+                    viewModel.list.removeAt(id)
+                    navigator.pop()
+                },
+                onUpdate = { i, v -> viewModel.list[i] = v }
+            )
+        }
+    }
+}
 
 @Composable
-fun ToDoDetailsScreen(
+private fun ToDoDetailsContent(
     id: Int,
     text: String,
     onDelete: (Int) -> Unit,

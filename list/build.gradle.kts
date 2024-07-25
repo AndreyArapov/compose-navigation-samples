@@ -39,8 +39,13 @@ android {
 }
 
 dependencies {
+    implementation(libs.voyager)
+    implementation(project(":navigation"))
+    implementation(project(":data"))
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
+    implementation(libs.androidx.viewModel)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)

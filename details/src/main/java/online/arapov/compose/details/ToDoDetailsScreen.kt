@@ -22,6 +22,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+object ToDoDetailsScreen {
+    const val route = "list/{id}"
+
+    fun getRoute(id: Int): String {
+        return "list/$id"
+    }
+}
+
 @Composable
 fun ToDoDetailsScreen(
     id: Int,

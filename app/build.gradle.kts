@@ -52,6 +52,9 @@ android {
 dependencies {
     implementation(project(":list"))
     implementation(project(":details"))
+
+    implementation(libs.androidx.navigation.compose)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -40,18 +41,29 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    ksp {
+        arg("compose-destinations.htmlMermaidGraph", "$rootDir/docs")
+        arg("compose-destinations.mermaidGraph", "$rootDir/docs")
+        arg("compose-destinations.codeGenPackageName", "online.arapov.compose.navigation.ui.screens")
+    }
 }
 
 dependencies {
     implementation(project(":list"))
     implementation(project(":details"))
+    implementation(project(":data"))
+
+    implementation(libs.destinations.core)
+    ksp(libs.destinations.ksp)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

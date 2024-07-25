@@ -1,0 +1,13 @@
+---
+title: Main Navigation Graph
+---
+%%{init: {'theme':'base', 'themeVariables': { 'primaryTextColor': '#fff' }}%%
+graph TD
+main(["MainGraph"]) -- "start" --- list_g(["ListNavGraph 🧩"])
+main(["MainGraph"]) --- details_g(["DetailsNavGraph 🧩"])
+
+click list_g "ListGraph.mmd" "See ListNavGraph details" _blank
+click details_g "DetailsGraph.mmd" "See DetailsNavGraph details" _blank
+
+classDef navgraph fill:#63BC76,stroke:#ffffff;
+class main,list_g,details_g navgraph;

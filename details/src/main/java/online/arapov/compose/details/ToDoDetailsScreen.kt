@@ -21,17 +21,56 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavBackStackEntry
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.parameters.CodeGenVisibility
+import com.ramcosta.composedestinations.generated.details.destinations.ToDoDetailsScreenDestination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import online.arapov.compose.data.ToDoViewModel
 
+data class ToDoDetailsArgs(
+    val id: Int?,
+)
+
+@Destination<DetailsNavGraph>(
+    start = true,
+    navArgs = ToDoDetailsArgs::class,
+    visibility = CodeGenVisibility.INTERNAL
+)
 @Composable
 fun ToDoDetailsScreen(
+    navigator: DestinationsNavigator,
+    navBackStackEntry: NavBackStackEntry,
+    viewModel: ToDoViewModel
+) {
+    val args = ToDoDetailsScreenDestination.argsFrom(navBackStackEntry)
+
+    val id = args.id ?: return
+    if (id !in viewModel.list.indices) return
+
+    val text = viewModel.list[id]
+    ToDoDetailsContent(
+        id = id,
+        text = text,
+        onDelete = {
+            navigator.navigateUp()
+            viewModel.list.removeAt(id)
+        },
+        onUpdate = { i, v ->
+            viewModel.list[i] = v
+        }
+    )
+}
+
+@Composable
+private fun ToDoDetailsContent(
     id: Int,
     text: String,
     onDelete: (Int) -> Unit,
     onUpdate: (Int, String) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     Scaffold(
-        modifier = modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp)
     ) { padding ->
         Column(
             modifier = Modifier

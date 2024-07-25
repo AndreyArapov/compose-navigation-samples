@@ -26,9 +26,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.parameters.CodeGenVisibility
+import com.ramcosta.composedestinations.generated.details.navgraphs.DetailsGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import online.arapov.compose.data.ToDoViewModel
+import online.arapov.compose.details.ToDoDetailsArgs
 
+@Destination<ListNavGraph>(
+    start = true,
+    visibility = CodeGenVisibility.INTERNAL
+)
 @Composable
 fun TodoListScreen(
+    navigator: DestinationsNavigator,
+    viewModel: ToDoViewModel
+) {
+    TodoListContent(
+        list = viewModel.list,
+        onClick = {
+            navigator.navigate(DetailsGraph(ToDoDetailsArgs(it)))
+        },
+        addTodo = { viewModel.list.add(it) }
+    )
+}
+
+@Composable
+private fun TodoListContent(
     list: List<String>,
     onClick: (Int) -> Unit,
     addTodo: (String) -> Unit,

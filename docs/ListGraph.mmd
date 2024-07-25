@@ -1,0 +1,12 @@
+---
+title: List/list Navigation Graph
+---
+%%{init: {'theme':'base', 'themeVariables': { 'primaryTextColor': '#fff' }}%%
+graph TD
+list/list(["ListNavGraph"]) -- "start" --- list/todo_list_screen("TodoListScreen")
+
+
+classDef destination fill:#5383EC,stroke:#ffffff;
+class list/todo_list_screen destination;
+classDef navgraph fill:#63BC76,stroke:#ffffff;
+class list/list navgraph;

@@ -1,0 +1,12 @@
+---
+title: Details/details Navigation Graph
+---
+%%{init: {'theme':'base', 'themeVariables': { 'primaryTextColor': '#fff' }}%%
+graph TD
+details/details(["DetailsNavGraph"]) -- "start" --- details/to_do_details_screen("ToDoDetailsScreen")
+
+
+classDef destination fill:#5383EC,stroke:#ffffff;
+class details/to_do_details_screen destination;
+classDef navgraph fill:#63BC76,stroke:#ffffff;
+class details/details navgraph;

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -34,11 +35,21 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.10"
+    }
+
+    ksp {
+        arg("compose-destinations.moduleName", "list")
+        arg("compose-destinations.htmlMermaidGraph", "$rootDir/docs")
+        arg("compose-destinations.mermaidGraph", "$rootDir/docs")
     }
 }
 
 dependencies {
+    implementation(project(":details"))
+    implementation(project(":data"))
+    implementation(libs.destinations.core)
+    ksp(libs.destinations.ksp)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)

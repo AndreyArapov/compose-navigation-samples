@@ -21,9 +21,37 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arkivanov.decompose.ComponentContext
+import online.arapov.compose.data.ToDoViewModel
+
+class ToDoDetailsComponent(
+    componentContext: ComponentContext,
+    val id: Int,
+    val onFinish: () -> Unit
+) : ComponentContext by componentContext
 
 @Composable
 fun ToDoDetailsScreen(
+    component: ToDoDetailsComponent,
+    viewModel: ToDoViewModel
+) {
+    val id = component.id
+
+    if (id !in viewModel.list.indices) return
+
+    ToDoDetailsScreen(
+        id = id,
+        text = viewModel.list[id],
+        onDelete = {
+            component.onFinish()
+            viewModel.list.removeAt(id)
+        },
+        onUpdate = { i, v -> viewModel.list[i] = v }
+    )
+}
+
+@Composable
+private fun ToDoDetailsScreen(
     id: Int,
     text: String,
     onDelete: (Int) -> Unit,

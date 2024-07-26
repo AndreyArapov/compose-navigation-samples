@@ -26,9 +26,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.ComponentContext
+import online.arapov.compose.data.ToDoViewModel
+
+class TodoListComponent(
+    componentContext: ComponentContext,
+    val onShowDetails: (Int) -> Unit
+) : ComponentContext by componentContext
 
 @Composable
 fun TodoListScreen(
+    component: TodoListComponent,
+    viewModel: ToDoViewModel
+) {
+    TodoListContent(
+        list = viewModel.list,
+        onClick = { component.onShowDetails(it) },
+        addTodo = { viewModel.list += it}
+    )
+}
+
+@Composable
+private fun TodoListContent(
     list: List<String>,
     onClick: (Int) -> Unit,
     addTodo: (String) -> Unit,

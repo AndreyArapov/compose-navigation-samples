@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -52,6 +53,13 @@ android {
 dependencies {
     implementation(project(":list"))
     implementation(project(":details"))
+    implementation(project(":data"))
+
+    implementation(libs.decompose)
+    implementation(libs.decompose.ext)
+
+    implementation(libs.androidx.viewModel)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

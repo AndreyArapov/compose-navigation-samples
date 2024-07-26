@@ -23,3 +23,4 @@ rootProject.name = "Compose Navigation"
 include(":app")
 include(":list")
 include(":details")
+include(":data")

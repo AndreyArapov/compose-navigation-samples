@@ -21,6 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import online.arapov.compose.data.ToDoViewModel
 
 object ToDoDetailsScreen {
     const val route = "list/{id}"
@@ -30,8 +37,37 @@ object ToDoDetailsScreen {
     }
 }
 
+fun NavGraphBuilder.registerToDoDetails(navController: NavHostController) {
+    composable(
+        route = ToDoDetailsScreen.route,
+        arguments = listOf(
+            navArgument("id") {
+                type = NavType.IntType
+            }
+        )
+    ) { navBackStackEntry ->
+        val previousBackStackEntry = navController.previousBackStackEntry ?: return@composable
+        val viewModel = viewModel<ToDoViewModel>(previousBackStackEntry)
+        val list = viewModel.list
+
+        val id = navBackStackEntry.arguments!!.getInt("id")
+        if (id !in list.indices) {
+            return@composable
+        }
+        ToDoDetailsScreen(
+            id = id,
+            text = list[id],
+            onDelete = {
+                navController.popBackStack()
+                list.removeAt(it)
+            },
+            onUpdate = { i, v -> list[i] = v }
+        )
+    }
+}
+
 @Composable
-fun ToDoDetailsScreen(
+internal fun ToDoDetailsScreen(
     id: Int,
     text: String,
     onDelete: (Int) -> Unit,

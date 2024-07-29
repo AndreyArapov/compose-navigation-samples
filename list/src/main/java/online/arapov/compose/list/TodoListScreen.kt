@@ -26,13 +26,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
+import online.arapov.compose.data.ToDoViewModel
+import online.arapov.compose.details.ToDoDetailsScreen
 
 object TodoListScreen {
     const val route = "list"
 }
 
+fun NavGraphBuilder.registerToDoList(navController: NavHostController) {
+    composable(TodoListScreen.route) {
+        val viewModel = viewModel<ToDoViewModel>()
+        TodoListScreen(
+            list = viewModel.list,
+            onClick = { navController.navigate(ToDoDetailsScreen.getRoute(it)) },
+            addTodo = { viewModel.list.add(it) },
+        )
+    }
+}
+
 @Composable
-fun TodoListScreen(
+internal fun TodoListScreen(
     list: List<String>,
     onClick: (Int) -> Unit,
     addTodo: (String) -> Unit,
